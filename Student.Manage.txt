@@ -1,0 +1,71 @@
+package student;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class StudentManage {
+    private static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int choice;
+        do {
+            System.out.println("\n===== Student Management System =====");
+            System.out.println("1. Add Student");
+            System.out.println("2. View Students");
+            System.out.println("3. Search Student by ID");
+            System.out.println("4. Update Student");
+            System.out.println("5. Delete Student");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch(choice) {
+                case 1 -> addStudent();
+                case 2 -> viewStudents();
+                case 3 -> searchStudent();
+                case 4 -> updateStudent();
+                case 5 -> deleteStudent();
+                case 6 -> System.out.println("Exiting... Thank you!");
+                default -> System.out.println("Invalid choice! Try again.");
+            }
+        } while(choice != 6);
+    }
+
+    private static void addStudent() {
+        System.out.print("Enter ID: "); int id = sc.nextInt(); sc.nextLine();
+        System.out.print("Enter Name: "); String name = sc.nextLine();
+        System.out.print("Enter Age: "); int age = sc.nextInt(); sc.nextLine();
+        System.out.print("Enter Course: "); String course = sc.nextLine();
+
+        Student s = new Student(id, name, age, course);
+        StudentDAO.addStudent(s);
+    }
+
+    private static void viewStudents() {
+        List<Student> list = StudentDAO.getAllStudents();
+        if(list.isEmpty()) System.out.println("No students found!");
+        else list.forEach(System.out::println);
+    }
+
+    private static void searchStudent() {
+        System.out.print("Enter ID: "); int id = sc.nextInt();
+        Student s = StudentDAO.getStudentById(id);
+        if(s != null) System.out.println(s);
+        else System.out.println("❌ Student not found!");
+    }
+
+    private static void updateStudent() {
+        System.out.print("Enter ID to update: "); int id = sc.nextInt(); sc.nextLine();
+        System.out.print("Enter New Name: "); String name = sc.nextLine();
+        System.out.print("Enter New Age: "); int age = sc.nextInt(); sc.nextLine();
+        System.out.print("Enter New Course: "); String course = sc.nextLine();
+
+        Student s = new Student(id, name, age, course);
+        StudentDAO.updateStudent(s);
+    }
+
+    private static void deleteStudent() {
+        System.out.print("Enter ID to delete: "); int id = sc.nextInt();
+        StudentDAO.deleteStudent(id);
+    }
+}
